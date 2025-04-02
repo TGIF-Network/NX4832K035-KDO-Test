@@ -9,26 +9,14 @@
 set -o errexit
 set -o pipefail
 
-#Order
-#YSF2DMR
-#YSF2NXDN
-#YSF2P25
-
-#DMR2YSF
-#DMR2NXDN
-#
-
-m1=tgif.network
-m2=62031
-m3=31665
-
-
-m4=$(sed -nr "/^\[Enabled\]/ { :1 /^Enabled[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b 1;}" /etc/ysf2p25)
+m1=$(sed -nr "/^\[Enabled\]/ { :1 /^Enabled[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b 1;}" /etc/ysf2p25)
  
-m5=$(sed -nr "/^\[Network\]/ { :1 /^Static[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b 1;}" /etc/p25gateway)
+m2=$(sed -nr "/^\[P25 Network\]/ { :1 /^StartupDstId[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b 1;}" /etc/ysf2p25)
+m3=tgif.network
+m4=21665
 
-if [ -z "$m5" ]; then
-m5=10210
+if [ -z "$m2" ]; then
+	m2=$(sed -nr "/^\[Network\]/ { :1 /^Static[ ]*=/ { s/.*=[ ]*//; p; q;}; n; b 1;}" /etc/p25gateway)
 fi
-mt="$m1|$m2|$m3|$m4|$m5"
+mt="$m1|$m2|$m3|$m4"
 echo "$mt"
