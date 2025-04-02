@@ -1,14 +1,34 @@
 #!/bin/bash
 ####################################################################
-#  Rest pi-star password                                           #
+#  Rest pi-star password raspberry not acceptable                  #
 #                                                                  #
-#  KF6S                                                 11-04-2019 #
+#  VE3RD                                             2025-04-02    #
 ####################################################################
 set -o errexit
 set -o pipefail
 
-# Set value in $2 for Mode/Network
-
 sudo mount -o remount,rw /
 
-sudo chpasswd <<< "pi-star:raspberry"
+# Function to decode a Base64 string
+decode_string() {
+    local input="$1"
+    echo -n "$input" | base64 -d
+}
+
+encrypted=$(cat /etc/pspass)
+if [ -z "$encrypted" ]; then
+
+ echo "No Password File Found"
+ exit
+fi
+
+decrypted=$(decode_string "$encrypted")
+if [ "$decrypted" == "raspberry" ]; then
+	echo "Sorry: PW= raspbery not Accepted\rPlease select another password"
+	exit
+fi
+
+echo "Pi-star Password is now $decrypted"
+
+
+sudo chpasswd <<< "pi-star:$decrypted"
