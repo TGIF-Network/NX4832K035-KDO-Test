@@ -38,10 +38,11 @@ list1=$(sudo sed -n '/from/p' $f1 | tail -1)
 #mode=$(echo "${list1:27:8}" |sed 's/,//g' | cut -d " " -f1)
 mode=$(echo "$list1" | cut -d " " -f4 | sed 's/,//g' )
 dt=$(echo "$list1" | cut -d " " -f2 )
+dur=$(echo "$list1" | cut -d " " -f18 )
 tm1=$(echo "$list1" | cut -d " " -f3 | cut -d "." -f1)
 #echo "$mode"
 tm=$(date -d "${tm1:0:-1} UTC" '+%R')
-
+tm="$tm""/""$dur"
 echo "$tm|$mode"
 
 
