@@ -11,7 +11,9 @@
 #iwlist wlan0 scan | grep 'ESSID' | sed 's/.*ESSID:"\(.*\)".*/\1/g' | tr " " "\n"|sed -n '1p'
 #main=$(iwlist wlan0 scan | grep 'ESSID' | sed 's/.*ESSID:"\(.*\)".*/\1/g')
 
-main=$(iwlist wlan0 scanning | grep ESSID | grep -v "\"\"" | sed 's/.*ESSID:"\(.*\)".*/\1/g' | tr -d "x00" | tr -d '\-|\\+[:blank:] ')
+#main=$(iwlist wlan0 scanning | grep ESSID | grep -v "\"\"" | sed 's/.*ESSID:"\(.*\)".*/\1/g' | tr -d "x00" | tr -d '\-|\\+[:blank:] ')
+main=$(iwlist wlan0 scanning | grep ESSID | grep -v "\"\"" | sed 's/.*ESSID:"\(.*\)".*/\1/g')
+
 #iwlist wlan0 scanning | grep ESSID | tr -d "x00" | tr -d '\-|\\+[:blank:] 
 
 
