@@ -32,7 +32,8 @@ line3=""
 
 	call=$(echo "$list1" | cut -d " " -f14)
 	echo "Add Call: $call" >> /home/pi-star/lh2_start.txt
-	dataline=$(sudo sed -n "/$call,/p" /usr/local/etc/stripped.csv)
+	dataline=$(sudo sed -n "/$call,/p" /usr/local/etc/stripped2.csv)
+
        	did=$(echo "$dataline" | cut -d',' -f1 | head -1)
         n1=$(echo "$dataline" | cut -d',' -f3 | head -1)
         n2=$(echo "$dataline" | cut -d',' -f4 | head -1)
@@ -46,8 +47,14 @@ line3=""
 if [ -z "$city" ]; then
 	city="N/A"
 fi
-	echo "$dt|$tm|$mode|$call|$name|$city, $prov, $country|$tg|$pl" 
-#| tr -d "\n" 
+
+if [[ $call =~ ^[0-9]+$ ]]; then
+#  echo "'$string' is entirely numeric."
+   echo "$dt|$tm|$mode|NoCall|NoName|NoCity, NoState/Prov, NoCountry|NA|NA" 
+else
+  echo "$dt|$tm|$mode|$call|$name|$city, $prov, $country|$tg|$pl" 
+#| tr -d "\n"
+fi 
 }
 
 function domodedstar
@@ -55,7 +62,7 @@ function domodedstar
 line3=""
 
         echo "Add Call: $call" >> /home/pi-star/lh2_start.txt
-        dataline=$(sudo sed -n "/$call/p" /usr/local/etc/stripped.csv)
+        dataline=$(sudo sed -n "/$call/p" /usr/local/etc/stripped2.csv)
         did=$(echo "$dataline" | cut -d',' -f1 | head -1)
         n1=$(echo "$dataline" | cut -d',' -f3 | head -1)
         n2=$(echo "$dataline" | cut -d',' -f4 | head -1)
@@ -76,7 +83,7 @@ function domodedysf
 line3=""
 
         echo "Add Call: $call" >> /home/pi-star/lh2_start.txt
-        dataline=$(sudo sed -n "/$call/p" /usr/local/etc/stripped.csv)
+        dataline=$(sudo sed -n "/$call/p" /usr/local/etc/stripped2.csv)
         did=$(echo "$dataline" | cut -d',' -f1 | head -1)
         n1=$(echo "$dataline" | cut -d',' -f3 | head -1)
         n2=$(echo "$dataline" | cut -d',' -f4 | head -1)
@@ -131,7 +138,8 @@ if [ "$mode" == "DMR" ]; then
 
         call=$(echo "$list1" | cut -d " " -f14)
         echo "Add Call: $call" >> /home/pi-star/lh2_start.txt
-        dataline=$(sudo sed -n "/$call/p" /usr/local/etc/stripped.csv)
+        dataline=$(sudo sed -n "/$call/p" /usr/local/etc/stripped2.csv)
+#echo "$call"
 
         	did=$(echo "$dataline" | cut -d',' -f1 | head -1)
         	n1=$(echo "$dataline" | cut -d',' -f3 | head -1)
@@ -168,7 +176,14 @@ if [ "$mode" == "DMR" ]; then
 	if [ -z "$city" ]; then
         	city="N/A"
 	fi
-        echo "$dt|$tm|$mode|$call|$name|$city, $prov, $country|$tg|$pl|$BER"
+if [[ $call =~ ^[0-9]+$ ]]; then
+   echo "$dt|$tm|$mode|NoCall|NoName|NoCity, NoState/Prov, NoCountry|NA|NA" 
+else
+  echo "$dt|$tm|$mode|$call|$name|$city, $prov, $country|$tg|$pl" 
+#| tr -d "\n"
+fi 
+
+#        echo "$dt|$tm|$mode|$call|$name|$city, $prov, $country|$tg|$pl|$BER"
 	
 #	domodedmr
 fi
